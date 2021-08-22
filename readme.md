@@ -22,8 +22,6 @@ ex:
 | rule_id | rule_key    | recommended_product |
 |---------+-------------+---------------------|
 |  xxxxx  | flour__milk | Sugar               |
-|  xxxxx  | flour       | Milk                |
-|  xxxxx  | milk        | Miojo               |
 ```
 
 _The inputs will be cleaned up before saving/querying, so it is not case sensitive. Product lists get converted into a 'rule_key' (trimmed, sorted, slugified, and concatenated), and recommended products get "prettified"_
@@ -59,7 +57,7 @@ Then, every possible rule_key is generated from the provided list, for our examp
 'honey', 'sugar', 'milk', 'honey__sugar', 'honey__milk', 'milk__sugar', 'honey__milk__sugar'
 ```
 
-We use all these `rule_keys` to query the database, returning all matching rules. Finally we compare the `recommended_products` to the provided `product_list`, ensuring we return only products not present in the list.
+We compare all these `rule_keys` against every rule in the database, returning all matches. Finally we compare the `recommended_products` to the provided `product_list`, ensuring we return only products not present in the list.
 
 ## Setup
 
