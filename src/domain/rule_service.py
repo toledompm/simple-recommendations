@@ -5,7 +5,6 @@ from src.domain.repositories.rule_repository import (
     delete_by_ids,
     get_all,
     save,
-    get_many,
 )
 
 
@@ -38,8 +37,7 @@ def get_recommended_products(product_list):
             [__generate_group_key(combination) for combination in partial_combinations]
         )
 
-    print(all_rule_keys)
-    matching_rules = get_many(all_rule_keys)
+    matching_rules = __get_matching_rules(all_rule_keys)
     if len(matching_rules) == 0:
         return []
 
@@ -53,7 +51,12 @@ def get_recommended_products(product_list):
         for recommended_product in recommended_products
         if __slugify(recommended_product) not in slugified_product_list
     ]
-    return recommended_products
+    return list(set(recommended_products))
+
+
+def __get_matching_rules(rule_keys):
+    all_rules = get_all()
+    return [rule for rule in all_rules if rule.rule_key in rule_keys]
 
 
 def __split_group_key(group_key):

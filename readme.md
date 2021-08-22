@@ -22,6 +22,8 @@ ex:
 | rule_id | rule_key    | recommended_product |
 |---------+-------------+---------------------|
 |  xxxxx  | flour__milk | Sugar               |
+|  xxxxx  | flour       | Milk                |
+|  xxxxx  | milk        | Miojo               |
 ```
 
 _The inputs will be cleaned up before saving/querying, so it is not case sensitive. Product lists get converted into a 'rule_key' (trimmed, sorted, slugified, and concatenated), and recommended products get "prettified"_
