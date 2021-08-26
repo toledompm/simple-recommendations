@@ -95,7 +95,7 @@ $ docker-compose up
 3 - Create DB/Table:
 
 ```bash
-$ make db-setup
+$ make setup-db
 ```
 
 SQL for manual setup:

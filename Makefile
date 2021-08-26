@@ -13,3 +13,7 @@ endef
 setup-db:
 	@echo "Setting up database..."
 	docker-compose exec maria-db bash -c 'mysql -u $(DB_USER) -e "$(CREATE_DB_SCRIPT)" -p'
+
+run:
+	docker run --rm -ti -v ${PWD}:/app -w /app --network=simple-recommendations_default python:3.7-slim \
+    bash -c "/usr/local/bin/pip install -r /app/requirements.txt; python main.py"
