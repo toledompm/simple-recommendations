@@ -53,10 +53,11 @@ def get_recommended_products(product_list):
         rule.recommended_product for rule in matching_rules if rule.recommended_product
     ]
 
+    # if the recommend product is already in the chart dont add to recommended list
     recommended_products = [
         recommended_product
         for recommended_product in recommended_products
-        if __slugify(recommended_product) not in slugified_product_list # if the recommend product is already in the chart
+        if __slugify(recommended_product) not in slugified_product_list
     ]
 
     return list(set(recommended_products)) # remove duplicated products

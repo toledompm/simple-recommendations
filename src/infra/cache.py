@@ -1,4 +1,4 @@
-class custom_lru_cache:
+class custom_cache:
     def __init__(self, func):
         self.cache = []
         self.func = func
