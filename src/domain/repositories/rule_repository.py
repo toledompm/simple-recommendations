@@ -1,4 +1,4 @@
-from src.infra.cache import custom_lru_cache
+from src.infra.cache import custom_cache
 from src.domain.entities.rule import Rule
 from src.domain.db.config import session
 
@@ -15,6 +15,6 @@ def delete_by_ids(rule_ids):
     get_all.clear_cache()
 
 
-@custom_lru_cache
+@custom_cache
 def get_all():
     return session.query(Rule).all()

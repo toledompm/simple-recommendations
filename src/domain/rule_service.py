@@ -27,31 +27,40 @@ def delete_rules(rule_ids):
     delete_by_ids(rule_ids)
 
 
-def get_recommended_products(product_list):
+def __generate_combinations(product_list):
     all_rule_keys = []
     for combination_length in range(1, len(product_list) + 1):
         partial_combinations = [
             list(x) for x in combinations(product_list, combination_length)
         ]
         all_rule_keys.extend(
-            [__generate_group_key(combination) for combination in partial_combinations]
+            [__generate_group_key(combination)
+             for combination in partial_combinations]
         )
+    return all_rule_keys
 
+
+def get_recommended_products(product_list):
+    all_rule_keys = __generate_combinations(product_list)
     matching_rules = __get_matching_rules(all_rule_keys)
-    if len(matching_rules) == 0:
+
+    if len(matching_rules) == 0: # no recommendations
         return []
 
     slugified_product_list = [__slugify(product) for product in product_list]
 
-    recommended_products = [
+    recommended_products = [ # return just the recommended_product field
         rule.recommended_product for rule in matching_rules if rule.recommended_product
     ]
+
+    # if the recommend product is already in the chart dont add to recommended list
     recommended_products = [
         recommended_product
         for recommended_product in recommended_products
         if __slugify(recommended_product) not in slugified_product_list
     ]
-    return list(set(recommended_products))
+
+    return list(set(recommended_products)) # remove duplicated products
 
 
 def __get_matching_rules(rule_keys):

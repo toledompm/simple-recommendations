@@ -6,7 +6,7 @@ def menu():
         """
   1- save new rule
   2- list rules
-  3- recommend
+  3- inform the chart
   4- exit
   """
     )
