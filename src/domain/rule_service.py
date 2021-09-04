@@ -27,19 +27,6 @@ def delete_rules(rule_ids):
     delete_by_ids(rule_ids)
 
 
-def __generate_combinations(product_list):
-    all_rule_keys = []
-    for combination_length in range(1, len(product_list) + 1):
-        partial_combinations = [
-            list(x) for x in combinations(product_list, combination_length)
-        ]
-        all_rule_keys.extend(
-            [__generate_group_key(combination)
-             for combination in partial_combinations]
-        )
-    return all_rule_keys
-
-
 def get_recommended_products(product_list):
     all_rule_keys = __generate_combinations(product_list)
     matching_rules = __get_matching_rules(all_rule_keys)
@@ -61,6 +48,19 @@ def get_recommended_products(product_list):
     ]
 
     return list(set(recommended_products)) # remove duplicated products
+
+
+def __generate_combinations(product_list):
+    all_rule_keys = []
+    for combination_length in range(1, len(product_list) + 1):
+        partial_combinations = [
+            list(x) for x in combinations(product_list, combination_length)
+        ]
+        all_rule_keys.extend(
+            [__generate_group_key(combination)
+             for combination in partial_combinations]
+        )
+    return all_rule_keys
 
 
 def __get_matching_rules(rule_keys):
