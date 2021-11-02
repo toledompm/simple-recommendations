@@ -13,11 +13,19 @@ def save(rule_product: RuleProduct):
     return rule_product
 
 
-def get_rule_ids_by_product_ids(product_ids):
+def get_rule_ids_by_product_ids(product_ids: list):
     rule_products = (
         session.query(RuleProduct).filter(RuleProduct.product_id.in_(product_ids)).all()
     )
     return list(set([rule_product.rule_id for rule_product in rule_products]))
+
+
+def delete_by_rule_ids(rule_ids: list):
+    for rule_id in rule_ids:
+        session.query(RuleProduct).filter(RuleProduct.rule_id == rule_id).delete()
+        get_products_by_rule_id.cache_remove(rule_id)
+
+    session.commit()
 
 
 @custom_lru_cache

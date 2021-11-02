@@ -15,8 +15,6 @@ def delete_by_ids(rule_ids: list):
         session.query(Rule).filter(Rule.rule_id == rule_id).delete()
 
     session.commit()
-
-    get_by_rule_ids.clear_cache()
     get_all.clear_cache()
 
 

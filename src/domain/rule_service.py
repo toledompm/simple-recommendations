@@ -1,6 +1,7 @@
 from src.domain.entities.rule import Rule
 from src.domain.product_service import find_or_create_product
 from src.domain.repositories.product_repository import get_products_by_id
+from src.domain.repositories.rule_product_repository import delete_by_rule_ids
 from src.domain.repositories.rule_repository import (
     delete_by_ids,
     get_all,
@@ -51,6 +52,7 @@ def get_all_rules():
 
 
 def delete_rules(rule_ids):
+    delete_by_rule_ids(rule_ids)
     delete_by_ids(rule_ids)
 
 
