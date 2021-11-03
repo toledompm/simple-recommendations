@@ -22,7 +22,7 @@ def list_rules():
     all_rules = get_all_rules()
     for rule in all_rules:
         print(
-            f"id: {rule.rule_id} - Product List: {rule.product_list} | Recommended Product: {rule.recommended_product}"
+            f"id: {rule['rule_id']} - Product List: {rule['product_list']} | Recommended Product: {rule['recommended_product']}"
         )
 
     print("Do you want to delete any rules? [y/N]: ")
