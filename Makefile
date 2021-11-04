@@ -27,5 +27,5 @@ setup-db:
 	docker-compose exec maria-db bash -c 'mysql -u $(DB_USER) -e "$(CREATE_DB_SCRIPT)" -p'
 
 run:
-	docker run --rm -ti -v ${PWD}:/app -w /app --network=simple-recommendations_default python:3.9-slim \
-    bash -c "/usr/local/bin/pip install -r /app/requirements.txt; bash"
+	docker run --rm -ti -v ${PWD}:/app -w /app --network=simple_recommendation python:3.9-slim \
+    bash -c "/usr/local/bin/pip install -r /app/requirements.txt; python main.py"

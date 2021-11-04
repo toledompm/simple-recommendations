@@ -12,3 +12,7 @@ services:
       MYSQL_PASSWORD: "dba"
     volumes:
       - ./data/db:/var/lib/mysql
+
+networks:
+  default:
+    name: simple_recommendation
