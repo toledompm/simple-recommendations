@@ -3,7 +3,7 @@ from src.domain.repositories.product_repository import get_by_slug, save
 from src.infra.string_utils import pretify, slugify
 
 
-def find_or_create_product(product_name):
+def find_or_create_product(product_name: str) -> Product:
     slug = slugify(product_name)
     prettified_name = pretify(product_name)
 
