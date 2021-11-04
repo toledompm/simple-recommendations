@@ -1,13 +1,11 @@
-from src.application.recommendations import list_rules, recommend, save_rule
+from src.application.recommendations import recommend
 
 
 def menu():
     print(
         """
-  1- save new rule
-  2- list rules
-  3- inform the chart
-  4- exit
+  1- inform the cart
+  2- exit
   """
     )
 
@@ -16,7 +14,7 @@ def menu():
 
 
 def main():
-    menu_dict = {"1": save_rule, "2": list_rules, "3": recommend, "4": exit}
+    menu_dict = {"1": recommend, "2": exit}
 
     while True:
         # clear screen

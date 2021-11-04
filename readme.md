@@ -1,116 +1,69 @@
 ## Simple Recommendations
 
-Recommends products based on previously defined rules
+Recommends products based on apriori algorithm.
+
+#### Analysis repo
+
+https://github.com/jasondavindev/ml-apriori-recommendation
 
 ## Usage
-
-### Creating rules
-
-You will be prompted for 2 inputs:
-
-- product list (separated by '|')
-- recommended product
-
-This will create an entry in the database with the provided parameters.
-ex:
-
-```
-# product_list: milk|flour
-# recommended_product: sugar
-# will generate the following db row:
-
-| rule_id | rule_key    | recommended_product |
-|---------+-------------+---------------------|
-|  xxxxx  | flour__milk | Sugar               |
-```
-
-_The inputs will be cleaned up before saving/querying, so it is not case sensitive. Product lists get converted into a 'rule_key' (trimmed, sorted, slugified, and concatenated), and recommended products get "prettified"_
-
-### Listing rules:
-
-Gets and prints all rules from the database, the user is then given the option to delete any rules. ex:
-
-```
-id: 3 - Product List: ['Honey', 'Milk', 'Sugar'] | Recommended Product: Egg
-id: 4 - Product List: ['Honey', 'Sugar'] | Recommended Product: Ice Tea
-id: 8 - Product List: ['Flour', 'Milk'] | Recommended Product: Sugar
-Do you want to delete any rules? [y/N]:
-```
-
-If the input is `y`, the user is prompted for the ids he wishes to delete.
-
-```
-Enter the ids to delete separated by spaces (i.e: 10 20 40):
-```
 
 ### Getting recommendations
 
 The user is prompted for a list of products:
 
 ```
-Enter product list separated by '|' (i.e: sugar | honey | ice tea): honey|sugar|milk
+Enter product list separated by '|' (i.e: sugar | honey | ice tea): honey|sugar
 ```
 
-Then, every possible rule_key is generated from the provided list, for our example that would be:
+For each product on the list, it will be created if it not exist in the database. Then the apriori algorithm will run and return a recommended product list or none.
 
+Example
+
+```text
+  1- inform the cart
+  2- exit
+
+Enter your choice: 1
+Enter product list separated by '|' (i.e: sugar | honey | ice tea): a|b
+Recommended products: None
+Press Enter to continue...
+
+  1- inform the cart
+  2- exit
+
+Enter your choice: 1
+Enter product list separated by '|' (i.e: sugar | honey | ice tea): a
+Recommended products: B
+Press Enter to continue...
 ```
-'honey', 'sugar', 'milk', 'honey__sugar', 'honey__milk', 'milk__sugar', 'honey__milk__sugar'
-```
 
-We compare all these `rule_keys` against every rule in the database, returning all matches. Finally we compare the `recommended_products` to the provided `product_list`, ensuring we return only products not present in the list.
+## Setup (docker)
 
-## Setup
-
-### Application Setup
-
-1 - Install requirements:
+Clone the `.env.sample` file to `.env` and set the variable values.
 
 ```bash
-$ python3 -m pip install -r requirements.txt
+cp .env.sample .env
 ```
 
-### DB Setup
+### Database setup
 
-1 - Setup .env
+Turn on database container using docker-compose file
 
 ```bash
-$ cp .env.sample .env
+docker-compose up
 ```
 
-Default values are setup to work with the provided docker-compose file, if you're using a different database you need to tweak these values manually
-
-```
-DB_ENDPOINT=localhost:3306
-DB_USER=dba
-DB_PASS=dba
-DB_NAME=recommendations
-```
-
-2 - Bring database up:
+Run `setup-db` make command and put database password (`dba` as user and password)
 
 ```bash
-$ docker-compose up
+make setup-db
 ```
 
-3 - Create DB/Table:
+### Application setup
+
+Run `run` make command. It attatches to the container, installs requirements and executes `main.py` script
 
 ```bash
-$ make setup-db
-```
-
-SQL for manual setup:
-
-```sql
-CREATE DATABASE `recommendations` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE recommendations;
-
--- recommendations.rules definition
-
-CREATE TABLE `rules` (
-  `rule_id` int(11) NOT NULL AUTO_INCREMENT,
-  `rule_key` varchar(255) NOT NULL,
-  `recommended_product` varchar(255) NOT NULL,
-  PRIMARY KEY (`rule_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+make run
 ```
