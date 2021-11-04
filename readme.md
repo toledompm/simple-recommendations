@@ -70,6 +70,6 @@ make run
 
 ### Members
 - [Marcos Toledo](https://github.com/toledompm)
-- [Jason Davin](https://github.com/jasondavindev)
+- [Jason Carneiro](https://github.com/jasondavindev)
 - [Nicolas Fujisawa](https://github.com/nicolasfujisawa)
 
