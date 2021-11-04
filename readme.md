@@ -67,3 +67,9 @@ Run `run` make command. It attatches to the container, installs requirements and
 ```bash
 make run
 ```
+
+### Members
+- [Marcos Toledo](https://github.com/toledompm)
+- [Jason Davin](https://github.com/jasondavindev)
+- [Nicolas Fujisawa](https://github.com/nicolasfujisawa)
+
