@@ -62,7 +62,7 @@ make setup-db
 
 ### Application setup
 
-Run `run` make command. It take you to the container, installs requirements and executes `main.py` script
+Run `run` make command. It attatches to the container, installs requirements and executes `main.py` script
 
 ```bash
 make run
