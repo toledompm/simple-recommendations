@@ -18,13 +18,12 @@ Enter product list separated by '|' (i.e: sugar | honey | ice tea): honey|sugar
 
 For each product on the list, it will be created if it not exist in the database. Then the apriori algorithm will run and return a recommended product list or none.
 
-
 Example
 
 ```text
   1- inform the cart
   2- exit
-  
+
 Enter your choice: 1
 Enter product list separated by '|' (i.e: sugar | honey | ice tea): a|b
 Recommended products: None
@@ -32,7 +31,7 @@ Press Enter to continue...
 
   1- inform the cart
   2- exit
-  
+
 Enter your choice: 1
 Enter product list separated by '|' (i.e: sugar | honey | ice tea): a
 Recommended products: B
@@ -61,13 +60,6 @@ Run `setup-db` make command and put database password (`dba` as user and passwor
 make setup-db
 ```
 
-Run Python script to populate the database
-
-```bash
-make run # takes you to the container
-python populate_db.py # executes python script
-```
-
 ### Application setup
 
 Run `run` make command. It take you to the container, installs requirements and executes `main.py` script
@@ -75,4 +67,3 @@ Run `run` make command. It take you to the container, installs requirements and 
 ```bash
 make run
 ```
-
