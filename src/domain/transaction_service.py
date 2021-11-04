@@ -15,8 +15,8 @@ class __SupportObject:
     support: float
     product: Product
 
-    def __init__(self, support: float, product: Product):
-        self.support = support
+    def __init__(self, support_value: float, product: Product):
+        self.support = support_value
         self.product = product
 
 
@@ -37,6 +37,9 @@ class __ConfidenceObject:
         self.confidence = confidence
         self.support = support
 
+    def __to_string__(self):
+        return f"{self.product.product_name} -> {self.associated_product.product_name}: c:{self.confidence} - s:{self.support}"
+
 
 def create_new_transaction(product_name_list: list[str]):
     products = __find_or_create_products(product_name_list)
@@ -48,13 +51,13 @@ def create_new_transaction(product_name_list: list[str]):
         create_transaction_product(transaction, product)
 
 
-def get_recommended_product(product_name_list: str) -> Product:
+def get_recommended_product(product_name_list: str) -> list[__ConfidenceObject]:
     product_ids_by_transaction = get_all_transaction_product_ids_by_transaction()
     products = __find_or_create_products(product_name_list)
 
     all_other_products = __find_all_other_products(products)
     all_other_products = __prune_by_support(
-        all_other_products, ALL_OTHER_PRODUCTS_MIN_SUPPORT
+        all_other_products, product_ids_by_transaction, ALL_OTHER_PRODUCTS_MIN_SUPPORT
     )
 
     cart_support_list = __generate_support_objects(products, product_ids_by_transaction)
@@ -86,7 +89,7 @@ def __generate_support_objects(
         if min_support is not None and support_value < min_support:
             continue
 
-        support_obj = __SupportObject(support_value, None, product)
+        support_obj = __SupportObject(support_value, product)
         support_list.append(support_obj)
 
     return support_list
@@ -125,7 +128,7 @@ def __calculate_products_confidence(
 
 
 def __prune_by_support(
-    product_list: list[Product], min_support: float
+    product_list: list[Product], transactions: dict[int, set[int]], min_support: float
 ) -> list[Product]:
-    support_list = __generate_support_objects(product_list, min_support)
+    support_list = __generate_support_objects(product_list, transactions, min_support)
     return [product.product for product in support_list]

@@ -9,8 +9,6 @@ def save(product: Product) -> Product:
 
 
 def get_all_except(product_ids: list[int]) -> list[Product]:
-    print(product_ids)
-    input()
     return session.query(Product).filter(Product.product_id.notin_(product_ids)).all()
 
 

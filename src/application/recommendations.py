@@ -6,6 +6,6 @@ def recommend():
         "Enter product list separated by '|' (i.e: sugar | honey | ice tea): "
     )
     product_list = product_list.split("|")
-    recommended_product = get_recommended_product(product_list)
-    print(f"Recommended product: {recommended_product}")
+    # TODO: get recommended product
+
     input("Press Enter to continue...")
