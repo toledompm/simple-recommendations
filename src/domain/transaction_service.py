@@ -8,8 +8,8 @@ from src.domain.repositories.transaction_repository import save
 from src.domain.transaction_product_service import create_transaction_product
 from src.infra.apriori import confidence, support
 
-ALL_OTHER_PRODUCTS_MIN_SUPPORT = 0.5
-
+ALL_OTHER_PRODUCTS_MIN_SUPPORT = 0.05
+MIN_CONFIDENCE = 0.5
 
 class __SupportObject:
     support: float
@@ -65,8 +65,9 @@ def get_recommended_product(product_name_list: str) -> list[__ConfidenceObject]:
         cart_support_list, all_other_products, product_ids_by_transaction
     )
 
-    create_new_transaction(product_name_list)
-    return cart_association_list
+    final_cart_association_list = __prune_by_confidence(cart_association_list, MIN_CONFIDENCE)
+
+    return final_cart_association_list
 
 def __find_or_create_products(product_name_list: str) -> list[Product]:
     return [find_or_create_product(product) for product in product_name_list]
@@ -132,3 +133,6 @@ def __prune_by_support(
 ) -> list[Product]:
     support_list = __generate_support_objects(product_list, transactions, min_support)
     return [product.product for product in support_list]
+
+def __prune_by_confidence(confidence_list: list[__ConfidenceObject], min_confidence: float) -> list[__ConfidenceObject]:
+    return [confidence_object for confidence_object in confidence_list if confidence_object.confidence >= min_confidence]

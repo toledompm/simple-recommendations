@@ -22,13 +22,12 @@ def confidence(
 
     itemset = set([first_item, second_item])
 
-    count = 0
+    first_item_frequence = __count_frequence(transactions, set([first_item]))
+    
+    if first_item_frequence == 0:
+        return 0
 
-    for transaction_items in transactions.values():
-        if first_item in transaction_items:
-            count += 1
-
-    return __count_frequence(transactions, itemset) / count
+    return __count_frequence(transactions, itemset) / first_item_frequence
 
 
 def __count_frequence(transactions: dict[int, set[int]], itemset: set[int]):
