@@ -10,6 +10,8 @@ from src.infra.apriori import confidence, support
 
 ALL_OTHER_PRODUCTS_MIN_SUPPORT = 0.05
 MIN_CONFIDENCE = 0.5
+MIN_SUPPORT = 0.1
+
 
 class __SupportObject:
     support: float
@@ -56,18 +58,20 @@ def get_recommended_product(product_name_list: str) -> list[__ConfidenceObject]:
     products = __find_or_create_products(product_name_list)
 
     all_other_products = __find_all_other_products(products)
-    all_other_products = __prune_by_support(
-        all_other_products, product_ids_by_transaction, ALL_OTHER_PRODUCTS_MIN_SUPPORT
-    )
 
-    cart_support_list = __generate_support_objects(products, product_ids_by_transaction)
+    cart_support_list = __generate_support_objects(
+        products, product_ids_by_transaction)
+    cart_support_list = __prune_by_support(cart_support_list, MIN_SUPPORT)
+
     cart_association_list = __calculate_products_confidence(
         cart_support_list, all_other_products, product_ids_by_transaction
     )
 
-    final_cart_association_list = __prune_by_confidence(cart_association_list, MIN_CONFIDENCE)
+    final_cart_association_list = __prune_by_confidence_and_support(
+        cart_association_list, MIN_CONFIDENCE, MIN_SUPPORT)
 
     return final_cart_association_list
+
 
 def __find_or_create_products(product_name_list: str) -> list[Product]:
     return [find_or_create_product(product) for product in product_name_list]
@@ -129,10 +133,10 @@ def __calculate_products_confidence(
 
 
 def __prune_by_support(
-    product_list: list[Product], transactions: dict[int, set[int]], min_support: float
-) -> list[Product]:
-    support_list = __generate_support_objects(product_list, transactions, min_support)
-    return [product.product for product in support_list]
+    support_list: list[__SupportObject], min_support: float
+) -> list[__SupportObject]:
+    return [support_object for support_object in support_list if support_object.support >= min_support]
 
-def __prune_by_confidence(confidence_list: list[__ConfidenceObject], min_confidence: float) -> list[__ConfidenceObject]:
-    return [confidence_object for confidence_object in confidence_list if confidence_object.confidence >= min_confidence]
+
+def __prune_by_confidence_and_support(confidence_list: list[__ConfidenceObject], min_confidence: float, min_support: float) -> list[__ConfidenceObject]:
+    return [confidence_object for confidence_object in confidence_list if confidence_object.confidence >= min_confidence and confidence_object.support >= min_support]
